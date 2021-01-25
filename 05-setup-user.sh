@@ -13,6 +13,9 @@ echo "================"
 infecho () {
     echo "[Info] $1"
 }
+errecho () {
+    echo $1 1>&2
+}
 
 # Notify User
 infecho "The env vars that will be used in this script..."
