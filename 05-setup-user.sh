@@ -72,6 +72,10 @@ then
     sleep 3
     umount rootfs/dev
 
+    infecho "Unmounting your /boot from the rootfs..."
+    sleep 3
+    umount rootfs/boot
+
     infecho "Unmounting rootfs..."
     sleep 3
     umount $PP_PARTB
