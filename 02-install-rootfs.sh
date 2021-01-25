@@ -24,9 +24,11 @@ fi
 
 # Warning
 echo "=== WARNING WARNING WARNING ==="
-infecho "This script will try to mount to /dev/loop0."
-infecho "Make sure nothing else is there with: lsblk"
+infecho "This script will try to mount to ${loop_device_fedora}."
+infecho "The script detected this loop-device was unused, but we leave no warranties"
+infecho "Please make a manual inspection of this output to ensure it isn't used already:"
 echo "=== WARNING WARNING WARNING ==="
+losetup
 echo
 read -p "Continue? [y/N] " -n 1 -r
 echo
@@ -37,9 +39,9 @@ then
     mkdir -p rootfs
 
     infecho "Mounting Fedora image..."
-    losetup /dev/loop0 rawhide.raw
-    partprobe -s /dev/loop0
-    mount /dev/loop0p3 imgfs
+    losetup ${loop_device_fedora} rawhide.raw
+    partprobe -s ${loop_device_fedora}
+    mount ${loop_device_fedora}p3 imgfs
 
     infecho "Mounting SD Card rootfs..."
     partprobe -s $PP_IMAGE
@@ -53,8 +55,8 @@ then
     rm -rf rootfs/boot/*
 
     infecho "Unmounting everything..."
-    umount /dev/loop0p3
-    losetup -d /dev/loop0
+    umount ${loop_device_fedora}p3
+    losetup -d ${loop_device_fedora}
     umount $PP_PARTB
 
     infecho "Deleting temp directories..."

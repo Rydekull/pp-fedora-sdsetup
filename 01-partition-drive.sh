@@ -23,9 +23,11 @@ fi
 
 # Warning
 echo "=== WARNING WARNING WARNING ==="
-infecho "This script will mount to /dev/loop1."
-infecho "Make sure nothing else is mounted there: lsblk"
+infecho "This script will try to mount to ${loop_device_phone}."
+infecho "The script detected this loop-device was unused, but we leave no warranties" 
+infecho "Please make a manual inspection of this output to ensure it isn't used already:"
 echo "=== WARNING WARNING WARNING ==="
+losetup
 echo
 read -p "Continue? [y/N] " -n 1 -r
 echo
@@ -42,8 +44,9 @@ EOF
     infecho "Image partitioned!"
 
     infecho "Mounting the image to loop1..."
-    losetup /dev/loop1 fedora.img
-    partprobe -s /dev/loop1
+    loop_device_phone=$(losetup -f)
+    losetup ${loop_device_phone} fedora.img
+    partprobe -s ${loop_device_phone}
 
     infecho "Beginning filesystem creation..."
     infecho "If this fails, you might need to install mkfs.f2fs, which is usually called f2fs-tools."
